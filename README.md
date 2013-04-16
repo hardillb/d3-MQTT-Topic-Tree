@@ -16,4 +16,7 @@ http://www-01.ibm.com/common/ssi/cgi-bin/ssialias?infotype=AN&subtype=CA&htmlfid
 
 -- index.mosquitto.html
 This version uses mosquitto-1.1.js client library from here:
-http://mosquitto.org/download/ 
+http://mosquitto.org/download/
+
+You can use lighttpd with the websockets module to proxy websocket requests for mosquitto. You can find details of how to  build lighttpd with the required module here:
+https://github.com/nori0428/mod_websocket 
