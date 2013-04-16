@@ -6,7 +6,7 @@
     <link type="text/css" rel="stylesheet" href="style.css"/>
     <script type="text/javascript" src="d3/d3.js"></script>
     <script type="text/javascript" src="d3/d3.layout.js"></script>
-    <script type="text/javascript" src="mosquitto-1.1.js"></script>
+    <script type="text/javascript" src="mqttws31.js"></script>
     <script type="text/javascript" src="topic-tree.js"></script>
     <style type="text/css">
 
@@ -50,27 +50,23 @@ path.link {
 
 setup("body");
 
-var mosq = new Mosquitto();
-mosq.onmessage = onMessage;
-mosq.ondisconnect = onDisconnect;
-mosq.onconnect = function(rc) { 
-	console.log("mqtt connected");
-	mosq.subscribe('#', 0);
-};
+var client = new Messaging.Client(location.hostname, Number(location.port), "web" + new Date().getTime());
+client.onMessageArrived = onMessage;
+client.onConnectionLost = onDisconnect;
+client.connect({onSuccess:onConnect, cleanSession:true});
 
-//var url = 'ws://test.mosquitto.org/mqtt';
-var url = 'ws://' + location.host + ":" + location.port + '/mqtt';
-console.log(url);
-mosq.connect(url);
+function onConnect(context) {
+	client.subscribe('#');
+}
 
-function onMessage(topic, payload, qos) {
+function onMessage(message) {
 	//console.log(message.topic + "- " + message.payload);
-	addNode(topic, payload);
+	addNode(message.destinationName, message.payloadString);
 }
 
 function onDisconnect(reason) {
-	console.log("disconnected");
-	alert("disconnected");
+	console.log("disconnected - " + reason);
+	alert("disconnected - " + reason);
 }
     </script>
   </body>
