@@ -54,8 +54,7 @@ var client = new Messaging.Client("messagesight.demos.ibm.com",1883,"web" + new 
 client.onMessageArrived = onMessage;
 client.onconnectionlost = onDisconnect;
 function onConnect(){
-	client.subscribe('ChatterBox/#',onMessage);
-	client.subscribe('Locator/#',onMessage);
+	client.subscribe('#',onMessage);
 	console.log("mqtt connected");
 }
 
