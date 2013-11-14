@@ -43,21 +43,24 @@ path.link {
     </style>
   </head>
   <body>
-    <div id="body" style="width:1280px; height:800px; border:1px;">
+    <div id="body" style="width:1280px; height:800px; border=1px;">
     	
     </div>
     <script type="text/javascript">
 
 setup("body");
 
-var client = new Messaging.Client(location.hostname, Number(location.port), "web" + new Date().getTime());
+var client = new Messaging.Client("messagesight.demos.ibm.com",1883,"web" + new Date().getTime());
 client.onMessageArrived = onMessage;
-client.onConnectionLost = onDisconnect;
-client.connect({onSuccess:onConnect, cleanSession:true});
-
-function onConnect(context) {
-	client.subscribe('#');
+client.onconnectionlost = onDisconnect;
+function onConnect(){
+	client.subscribe('ChatterBox/#',onMessage);
+	client.subscribe('Locator/#',onMessage);
+	console.log("mqtt connected");
 }
+
+console.log("bar");
+client.connect({onSuccess:onConnect});
 
 function onMessage(message) {
 	//console.log(message.topic + "- " + message.payload);
