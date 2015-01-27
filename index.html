@@ -50,7 +50,7 @@ path.link {
 
 setup("body");
 
-var client = new Messaging.Client(document.location.hostname,1883,"web" + new Date().getTime());
+var client = new Paho.MQTT.Client(document.location.hostname,parseInt(document.location.port),"web" + new Date().getTime());
 client.onMessageArrived = onMessage;
 client.onconnectionlost = onDisconnect;
 function onConnect(){
