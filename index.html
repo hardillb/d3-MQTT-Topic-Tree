@@ -59,7 +59,7 @@ var client = new Paho.MQTT.Client(
 client.onMessageArrived = onMessage;
 client.onconnectionlost = onDisconnect;
 function onConnect(){
-	client.subscribe('#',onMessage);
+	client.subscribe(topic,onMessage);
 	console.log("mqtt connected");
 }
 
