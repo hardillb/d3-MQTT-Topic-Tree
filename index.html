@@ -6,6 +6,7 @@
     <link type="text/css" rel="stylesheet" href="style.css"/>
     <script type="text/javascript" src="d3/d3.js"></script>
     <script type="text/javascript" src="d3/d3.layout.js"></script>
+	<script type="text/javascript" src="config.js"></script>	
     <script type="text/javascript" src="mqttws31.js"></script>
     <script type="text/javascript" src="topic-tree.js"></script>
     <style type="text/css">
@@ -50,7 +51,11 @@ path.link {
 
 setup("body");
 
-var client = new Paho.MQTT.Client(document.location.hostname,parseInt(document.location.port),"web" + new Date().getTime());
+var client = new Paho.MQTT.Client(
+					host,
+					port,
+					"web_" + parseInt(Math.random() * 100,
+					10));
 client.onMessageArrived = onMessage;
 client.onconnectionlost = onDisconnect;
 function onConnect(){
