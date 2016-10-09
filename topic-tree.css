@@ -1,0 +1,29 @@
+.node circle {
+  cursor: pointer;
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node text {
+  font-size: 11px;
+}
+
+path.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+
+.popup rect {
+  fill: blue;
+  stroke: black;
+  stroke-width: 1.5px;
+  opacity: 1;
+  fill-opacity: 1;
+}
+
+.popup text {
+   fill: red;
+   font-weight: bold; 
+}

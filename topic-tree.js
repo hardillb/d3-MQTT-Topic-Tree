@@ -7,8 +7,8 @@
  */
 
 var m = [20, 120, 20, 120],
-    w = 1280 - m[1] - m[3],
-    h = 800 - m[0] - m[2],
+    w = 2000 - m[1] - m[3],
+    h = 750 - m[0] - m[2],
     i = 0,
     root;
 
@@ -23,9 +23,9 @@ var vis;
 function setup(tagID) {
 	tree = d3.layout.tree().size([h, w]);
 	diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
-	vis = d3.select("#"+tagID).append("svg:svg").attr("style","overflow: auto;").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+	vis = d3.select("#"+tagID).append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 	
-	  root = {"name": "/", "children": []};
+	  root = {"name": "-", "children": []};
 	  root.x0 = h / 2;
 	  root.y0 = 0;
 
