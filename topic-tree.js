@@ -25,7 +25,7 @@ function setup(tagID) {
 	diagonal = d3.svg.diagonal().projection(function(d) { return [d.y, d.x]; });
 	vis = d3.select("#"+tagID).append("svg:svg").attr("width", w + m[1] + m[3]).attr("height", h + m[0] + m[2]).append("svg:g").attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 	
-	  root = {"name": "-", "children": []};
+	  root = {"name": "-", "children": [], "topic": ""};
 	  root.x0 = h / 2;
 	  root.y0 = 0;
 
@@ -53,12 +53,12 @@ function update(source) {
   var node = vis.selectAll("g.node")
       .data(nodes, function(d) { return d.id || (d.id = ++i); });
   
-  
   // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("svg:g")
       .attr("class", "node")
       .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
-      .on("click", function(d) { toggle(d); update(d); });
+      .on("click", function(d) { toggle(d); update(d); })
+      .on("contextmenu", function(d) { window.location.search = "?filter=" + d.topic; event.preventDefault(); });
 
   nodeEnter.append("svg:circle")
       .attr("r", 1e-6)
@@ -221,7 +221,8 @@ function toggle(d) {
 function addNode(topic, body) {
 	var parts = topic.split("/");
 	if (root.children[0]===undefined){
-		newnode = {"name": parts.shift(), "children":[]};
+        var current = parts.shift();
+		newnode = {"name": current, "children":[], "topic": current};
 		root.children = [newnode];
 		walk(parts,newnode,body);
 	} else {
@@ -247,7 +248,7 @@ function walk(parts, node, body) {
 			//console.log("done loop - " + z + ", " + node.children.length);
 			if (z == node.children.length) {
 				//console.log("adding new");
-				var newnode = {"name": current, "children":[]};
+				var newnode = {"name": current, "children":[], "topic": (node.topic == "" ? "" : node.topic + "/") + current};
 				node.children.push(newnode);
 				walk(parts,node.children[z],body);
 			}
@@ -265,13 +266,13 @@ function walk(parts, node, body) {
 			//console.log("done hidden loop - " + z + ", " + node._children.length);
 			if (z == node._children.length) {
 				//console.log("adding new hidden");
-				var newnode = {"name": current, "_children":[]};
+				var newnode = {"name": current, "_children":[], "topic": (node.topic == "" ? "" : node.topic + "/") + current};
 				node._children.push(newnode);
 				walk(parts,node._children[z],body);
 			}
 		}else {
 			//console.log("empty");
-			newnode = {"name": current, "children":[]};
+			newnode = {"name": current, "children":[], "topic": (node.topic == "" ? "" : node.topic + "/") + current};
 			node.children = [newnode];
 			walk(parts,node.children[0],body);
 		}

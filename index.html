@@ -19,21 +19,37 @@
     </div>
     <script type="text/javascript">
 
+function qs(search_for) {
+	var query = window.location.search.substring(1);
+	var parms = query.split('&');
+	for (var i=0; i<parms.length; i++) {
+		var pos = parms[i].indexOf('=');
+		if (pos > 0  && search_for == parms[i].substring(0,pos)) {
+			return parms[i].substring(pos+1);;
+		}
+	}
+	return "";
+}
+
 var options = {
-  host: location.hostname,
-  port: parseInt(location.port),
+  host: 'home.die-hoffs.net',
+  port: 8884,
   clientID: "web" + new Date().getTime(),
   connectOpts: {
-    // userName: '',
-    // password: '',
-    // useSSL: true,
+    userName: 'hoco',
+    password: 'tosa',
+    useSSL: true,
     keepAliveInterval: 30,
     timeout: 10,
     cleanSession: false,
     onSuccess: onConnect,
     onFailure: onFailure
-  }
+  },
+  messageFilter: '#'
 }
+
+var filter = qs('filter');
+options.messageFilter = filter == "" ? "#" : decodeURIComponent(filter) + "/#";
 
 setup("body");
 
@@ -42,7 +58,7 @@ client.onMessageArrived = onMessage;
 client.onconnectionlost = onDisconnect;
 
 function onConnect(){
-	client.subscribe('#',onMessage);
+	client.subscribe(options.messageFilter,onMessage);
   document.getElementById('status').innerHTML= "";
 	console.log("mqtt connected");
 }
